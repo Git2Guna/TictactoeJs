@@ -4,90 +4,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/tic-tac-toe.ico" type="image/x-icon">
     <title>Tic Tac Toe</title>
+
     <style>
         body {
             width: 100vw;
             height: 100vh;
             margin: 0;
-            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            background-color: #393e46;
+            background: linear-gradient(135deg, #1f1c2c, #928dab);
             font-family: Arial, sans-serif;
-            color: #eeeeee;
+            color: #ffffff;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            letter-spacing: 2px;
         }
 
         .container {
             display: grid;
-            grid-template-columns: repeat(3, auto);
-            gap: 10px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(3, 100px);
+            gap: 12px;
+            margin-bottom: 25px;
         }
 
         .resetbtn {
-            border: 2px solid #222831;
-            box-shadow: 0 0 2px #eeeeee;
             width: 100px;
             height: 100px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.15);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 24px;
+            font-size: 40px;
             cursor: pointer;
-            background-color: #222831;
-            color: #eeeeee;
+            transition: 0.25s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
 
         .resetbtn:hover {
-            background-color: #30475e;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
         }
 
+        button.resetbtn {
+            width: auto;
+            height: auto;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 30px;
+        }
+
+        /* ===== POPUP DESIGN ===== */
         .msg {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            border: 1px solid #888;
-            color: red;
-            text-align: center;
-            font-size: 20px;
-            border-radius: 10px;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
             display: none;
-            padding: 20px;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
         }
 
-        .hi {
-            width: 400px;
-            height: 60px;
-            background-color: #fefefe;
+        .popup-card {
+            width: 320px;
+            padding: 30px;
+            background: linear-gradient(135deg, #ffffff, #f1f1f1);
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            animation: pop 0.4s ease;
+        }
+
+        .popup-card h2 {
+            margin-bottom: 20px;
+            color: #222831;
+            font-size: 26px;
+        }
+
+        .popup-card button {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            background: #222831;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .popup-card button:hover {
+            background: #30475e;
+            transform: scale(1.05);
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
     </style>
 </head>
 
 <body>
-    <h1> Tic Tac Toe</h1>
+
+    <h1>Tic Tac Toe</h1>
 
     <div class="container">
-        <label onclick="play('b1')" id="b1" class="resetbtn"></label>
-        <label onclick="play('b2')" id="b2" class="resetbtn"></label>
-        <label onclick="play('b3')" id="b3" class="resetbtn"></label>
-        <label onclick="play('b4')" id="b4" class="resetbtn"></label>
-        <label onclick="play('b5')" id="b5" class="resetbtn"></label>
-        <label onclick="play('b6')" id="b6" class="resetbtn"></label>
-        <label onclick="play('b7')" id="b7" class="resetbtn"></label>
-        <label onclick="play('b8')" id="b8" class="resetbtn"></label>
-        <label onclick="play('b9')" id="b9" class="resetbtn"></label>
+        <div onclick="play('b1')" id="b1" class="resetbtn"></div>
+        <div onclick="play('b2')" id="b2" class="resetbtn"></div>
+        <div onclick="play('b3')" id="b3" class="resetbtn"></div>
+        <div onclick="play('b4')" id="b4" class="resetbtn"></div>
+        <div onclick="play('b5')" id="b5" class="resetbtn"></div>
+        <div onclick="play('b6')" id="b6" class="resetbtn"></div>
+        <div onclick="play('b7')" id="b7" class="resetbtn"></div>
+        <div onclick="play('b8')" id="b8" class="resetbtn"></div>
+        <div onclick="play('b9')" id="b9" class="resetbtn"></div>
     </div>
 
     <button onclick="resetGame()" class="resetbtn">Reset Game</button>
 
+    <!-- POPUP -->
     <div id="msg" class="msg">
-        <div class="hi">
+        <div class="popup-card">
             <h2 id="xwin"></h2>
+            <button onclick="resetGame()">Play Again</button>
         </div>
     </div>
 
@@ -125,7 +177,7 @@
                 (b3 == 'x' && b6 == 'x' && b9 == 'x') ||
                 (b1 == 'x' && b5 == 'x' && b9 == 'x') ||
                 (b3 == 'x' && b5 == 'x' && b7 == 'x')) {
-                showMessage("x player wins!");
+                showMessage("X Player Wins 🎉");
             } else if ((b1 == 'o' && b2 == 'o' && b3 == 'o') ||
                 (b4 == 'o' && b5 == 'o' && b6 == 'o') ||
                 (b7 == 'o' && b8 == 'o' && b9 == 'o') ||
@@ -134,11 +186,11 @@
                 (b3 == 'o' && b6 == 'o' && b9 == 'o') ||
                 (b1 == 'o' && b5 == 'o' && b9 == 'o') ||
                 (b3 == 'o' && b5 == 'o' && b7 == 'o')) {
-                showMessage("o player wins!");
+                showMessage("O Player Wins 🎉");
             } else if (b1 != "" && b2 != "" && b3 != "" &&
                 b4 != "" && b5 != "" && b6 != "" &&
                 b7 != "" && b8 != "" && b9 != "") {
-                showMessage("Match draw!");
+                showMessage("Match Draw 😐");
             }
         }
 
@@ -146,18 +198,16 @@
             var x = document.getElementById("xwin");
             x.innerText = message;
             var c = document.getElementById("msg");
-            c.style.display = "block";
+            c.style.display = "flex";
             gameOver = true; // End the game
 
-            // Hide message after 3 seconds
-            setTimeout(function() {
+            setTimeout(function () {
                 c.style.display = "none";
                 resetBoard();
             }, 3000);
         }
 
         function resetBoard() {
-            // Clear all cells
             document.getElementById("b1").innerText = "";
             document.getElementById("b2").innerText = "";
             document.getElementById("b3").innerText = "";
@@ -168,13 +218,13 @@
             document.getElementById("b8").innerText = "";
             document.getElementById("b9").innerText = "";
             toy = 'x';
-            gameOver = false; // Reset the game over flag
+            gameOver = false;
         }
 
         function resetGame() {
             resetBoard();
         }
     </script>
-</body>
 
+</body>
 </html>
